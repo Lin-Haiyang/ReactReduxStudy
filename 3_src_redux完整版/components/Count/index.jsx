@@ -1,40 +1,43 @@
 import React, { Component } from 'react'
+//引入store，用于获取redux中保存状态
 import store from '../../redux/store'
+//引入actionCreator，专门用于创建action对象
+import {createIncrementAction,createDecrementAction} from '../../redux/count_action'
+
 export default class Count extends Component {
 
-	state = {count:0}
+	state = {carName:'奔驰c63'}
+
+	/* componentDidMount(){
+		//检测redux中状态的变化，只要变化，就调用render
+		store.subscribe(()=>{
+			this.setState({})
+		})
+	} */
 
 	//加法
 	increment = ()=>{
 		const {value} = this.selectNumber
-		// const {count} = this.state
-		// this.setState({count:count+value*1})
-		store.dispatch({type: 'increment', data: value*1})
+		store.dispatch(createIncrementAction(value*1))
 	}
 	//减法
 	decrement = ()=>{
 		const {value} = this.selectNumber
-		// const {count} = this.state
-		// this.setState({count:count-value*1})
-		console.log(value);
-		store.dispatch({type: 'decrement', data: value*1})
+		store.dispatch(createDecrementAction(value*1))
 	}
 	//奇数再加
 	incrementIfOdd = ()=>{
 		const {value} = this.selectNumber
-		const count = store.getState();
+		const count = store.getState()
 		if(count % 2 !== 0){
-			// this.setState({count:count+value*1})
-			store.dispatch({type: 'increment', data: value*1})
+			store.dispatch(createIncrementAction(value*1))
 		}
 	}
 	//异步加
 	incrementAsync = ()=>{
 		const {value} = this.selectNumber
-		// const {count} = this.state
 		setTimeout(()=>{
-			// this.setState({count:count+value*1})
-			store.dispatch({type: 'increment', data: value*1})
+			store.dispatch(createIncrementAction(value*1))
 		},500)
 	}
 
