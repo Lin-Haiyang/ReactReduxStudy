@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import store from '../../redux/store'
+import { creatIncrementAtion, creatDecrementAtion, creatIncrementAsyncAtion } from '../../redux/count_action'
 export default class Count extends Component {
 
 	state = {count:0}
@@ -9,7 +10,7 @@ export default class Count extends Component {
 		const {value} = this.selectNumber
 		// const {count} = this.state
 		// this.setState({count:count+value*1})
-		store.dispatch({type: 'increment', data: value*1})
+		store.dispatch(creatIncrementAtion(value*1))
 	}
 	//减法
 	decrement = ()=>{
@@ -17,7 +18,7 @@ export default class Count extends Component {
 		// const {count} = this.state
 		// this.setState({count:count-value*1})
 		console.log(value);
-		store.dispatch({type: 'decrement', data: value*1})
+		store.dispatch(creatDecrementAtion(value*1))
 	}
 	//奇数再加
 	incrementIfOdd = ()=>{
@@ -25,17 +26,17 @@ export default class Count extends Component {
 		const count = store.getState();
 		if(count % 2 !== 0){
 			// this.setState({count:count+value*1})
-			store.dispatch({type: 'increment', data: value*1})
+			store.dispatch(creatIncrementAtion(value*1))
 		}
 	}
 	//异步加
 	incrementAsync = ()=>{
 		const {value} = this.selectNumber
 		// const {count} = this.state
-		setTimeout(()=>{
+		// setTimeout(()=>{
 			// this.setState({count:count+value*1})
-			store.dispatch({type: 'increment', data: value*1})
-		},500)
+			store.dispatch(creatIncrementAsyncAtion(value*1, 500))
+		// },500)
 	}
 
 	render() {
