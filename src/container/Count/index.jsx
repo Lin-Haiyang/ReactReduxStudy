@@ -1,48 +1,39 @@
 import React, { Component } from 'react'
-import store from '../../redux/store'
-import { creatIncrementAtion, creatDecrementAtion, creatIncrementAsyncAtion } from '../../redux/count_action'
-export default class Count extends Component {
+import { connect } from 'react-redux'
+import { increment, decrement, incrementAsync } from '../../redux/actions/action.js'
 
-	state = {count:0}
+
+class Count extends Component {
 
 	//加法
 	increment = ()=>{
 		const {value} = this.selectNumber
-		// const {count} = this.state
-		// this.setState({count:count+value*1})
-		store.dispatch(creatIncrementAtion(value*1))
+		this.props.increment(value*1)
 	}
 	//减法
 	decrement = ()=>{
 		const {value} = this.selectNumber
-		// const {count} = this.state
-		// this.setState({count:count-value*1})
-		console.log(value);
-		store.dispatch(creatDecrementAtion(value*1))
+		this.props.decrement(value*1)
 	}
 	//奇数再加
 	incrementIfOdd = ()=>{
 		const {value} = this.selectNumber
-		const count = store.getState();
+		const count = this.props.count;
 		if(count % 2 !== 0){
-			// this.setState({count:count+value*1})
-			store.dispatch(creatIncrementAtion(value*1))
+			this.props.increment(value*1)
 		}
 	}
 	//异步加
 	incrementAsync = ()=>{
 		const {value} = this.selectNumber
-		// const {count} = this.state
-		// setTimeout(()=>{
-			// this.setState({count:count+value*1})
-			store.dispatch(creatIncrementAsyncAtion(value*1, 500))
-		// },500)
+		this.props.incrementAsync(value*1, 1000)
 	}
 
 	render() {
 		return (
 			<div>
-				<h1>当前求和为：{store.getState()}</h1>
+				<h1>当前求和为：{this.props.count}</h1>
+				<h2>下方列表总数为{this.props.presonLength}</h2>
 				<select ref={c => this.selectNumber = c}>
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -56,3 +47,12 @@ export default class Count extends Component {
 		)
 	}
 }
+
+export default connect(
+	(state) => ({count: state.count, presonLength: state.persons.length}),
+	{
+		increment,
+		decrement,
+		incrementAsync
+	}
+)(Count)
